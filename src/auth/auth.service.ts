@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import * as argon from 'argon2';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDto } from './dto';
@@ -18,7 +18,7 @@ export class AuthService {
     });
 
     if (userExists) {
-      return { msg: 'Email already exists' };
+      throw new ForbiddenException('User already exists');
     }
 
     try {
@@ -35,7 +35,6 @@ export class AuthService {
     } catch (error) {
       if (error) {
         throw new Error(error.message);
-        // return { msg: 'Email already exists' };
       }
     }
   }
